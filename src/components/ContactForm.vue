@@ -48,8 +48,8 @@
         v-model="contactLocal.favorite"
       />
       <label for="favorite" class="form-check-label">
-        <strong>Liên hệ yêu thích</strong>
-      </label>
+        <strong>Liên hệ yêu thích</strong></label
+      >
     </div>
     <div class="form-group">
       <button class="btn btn-primary">Lưu</button>
@@ -64,7 +64,6 @@
     </div>
   </Form>
 </template>
-
 <script>
 import * as yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
@@ -87,11 +86,16 @@ export default {
         .max(50, "Tên có nhiều nhất 50 ký tự."),
       email: yup
         .string()
+        .required("E-mail phải có giá trị.")
         .email("E-mail không đúng.")
         .max(50, "E-mail tối đa 50 ký tự."),
-      address: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
+      address: yup
+        .string()
+        .required("Địa chỉ phải có giá trị.")
+        .max(100, "Địa chỉ tối đa 100 ký tự."),
       phone: yup
         .string()
+        .required("Số điện thoại phải có giá trị.")
         .matches(
           /((09|03|07|08|05)+([0-9]{8})\b)/g,
           "Số điện thoại không hợp lệ."
@@ -114,7 +118,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 @import "@/assets/form.css";
 </style>
