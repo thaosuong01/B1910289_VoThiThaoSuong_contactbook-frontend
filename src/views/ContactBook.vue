@@ -2,10 +2,15 @@
   <div class="page row">
     <div class="col-md-12"><InputSearch v-model="searchText" /></div>
     <div class="mt-3 col-md-6">
-      <h4>
-        Danh bạ
-        <i class="fas fa-address-book"></i>
-      </h4>
+      <div class="d-flex justify-content-between align-items-center">
+        <h4>
+          Danh bạ
+          <i class="fas fa-address-book"></i>
+        </h4>
+        <button class="btn btn-sm btn-warning" @click="handleFavorite">
+          <i class="fas fa-check"></i> Yêu thích
+        </button>
+      </div>
       <ContactList
         v-if="filteredContactsCount > 0"
         :contacts="filteredContacts"
@@ -50,6 +55,9 @@ import ContactCard from "@/components/ContactCard.vue";
 import InputSearch from "@/components/InputSearch.vue";
 import ContactList from "@/components/ContactList.vue";
 import ContactService from "@/services/contact.service";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 export default {
   components: {
     ContactCard,
@@ -102,10 +110,12 @@ export default {
         console.log(error);
       }
     },
+
     refreshList() {
       this.retrieveContacts();
       this.activeIndex = -1;
     },
+
     async removeAllContacts() {
       if (confirm("Bạn muốn xóa tất cả Liên hệ?")) {
         try {
@@ -116,8 +126,17 @@ export default {
         }
       }
     },
+
     goToAddContact() {
       this.$router.push({ name: "contact.add" });
+    },
+    
+    async handleFavorite() {
+      try {
+        this.contacts = await ContactService.getFavorite();
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   mounted() {

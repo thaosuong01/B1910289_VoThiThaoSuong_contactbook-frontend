@@ -8,6 +8,7 @@
 <script>
 import ContactForm from "@/components/ContactForm.vue";
 import ContactService from "@/services/contact.service";
+import { toast } from "vue3-toastify";
 export default {
   components: {
     ContactForm,
@@ -23,19 +24,11 @@ export default {
     async addContact(data) {
       try {
         await ContactService.create(data);
-        this.message = "Thêm liên hệ thành công thành công.";
+        this.$router.push({ name: "contactbook" });
+        toast.success("Thêm liên hệ thành công.");
       } catch (error) {
+        toast.error("Thêm liên hệ không thành công.");
         console.log(error);
-      }
-    },
-    async deleteContact() {
-      if (confirm("Bạn muốn xóa Liên hệ này?")) {
-        try {
-          await ContactService.delete(this.contact._id);
-          this.$router.push({ name: "contactbook" });
-        } catch (error) {
-          console.log(error);
-        }
       }
     },
   },
